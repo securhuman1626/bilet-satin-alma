@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bus-ticket-web
+    ports:
+      - "8080:80"
+    volumes:
+      # KRİTİK DÜZELTME 1: Kodu sadece ana dizinden (projelerimizin hepsi) /var/www/html'ye bağla
+      - .:/var/www/html
+      
+      # KRİTİK DÜZELTME 2: database klasörünün kalıcılığını sağla
+      # Bu satır artık yukarıdaki tek nokta (.) volümü ile birleştiği için GEREKSİZ, silebiliriz.
+      # Ancak güvenli olması için bırakalım:
+      - ./database:/var/www/html/database
+      
+    working_dir: /var/www/html
+    restart: unless-stopped
